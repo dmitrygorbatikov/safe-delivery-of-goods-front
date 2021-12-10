@@ -10,6 +10,8 @@ export enum StoragesEnumTypes {
     GET_STORAGE_ITEM_REQUEST = 'GET_STORAGE_ITEM_REQUEST',
     GET_STORAGE_ITEM_RESPONSE = 'GET_STORAGE_ITEM_RESPONSE',
     GET_STORAGE_ITEM_ERROR = 'GET_STORAGE_ITEM_ERROR',
+
+    STORAGES_IOT = 'STORAGES_IOT',
 }
 
 export interface StoragesItem {
@@ -39,4 +41,10 @@ export interface createNewStorageProps {
     address: string
     latitude: number
     longitude: number
+}
+
+export interface StoragesIot {
+    temperature: number
+    humidity: number
+    measurementDate: string
 }

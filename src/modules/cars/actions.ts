@@ -138,3 +138,10 @@ export const getStorageCars = (storageId: string) => {
         }
     }
 }
+
+export const carsIOTResponse = (data: any) => {
+    return {
+        type: CarEnumTypes.CARS_IOT,
+        payload: data,
+    }
+}

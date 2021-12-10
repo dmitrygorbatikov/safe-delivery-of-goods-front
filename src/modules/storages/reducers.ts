@@ -1,5 +1,5 @@
 import { AnyAction } from 'redux'
-import {StoragesEnumTypes, StoragesItem} from "./types";
+import {StoragesEnumTypes, StoragesIot, StoragesItem} from "./types";
 
 interface StoragesState {
     error?: string
@@ -7,12 +7,18 @@ interface StoragesState {
     storageItemLoading: boolean
     storages: StoragesItem[]
     storageItem?: StoragesItem
+    storagesIot: StoragesIot
 }
 
 const initState: StoragesState = {
     storageListLoading: false,
     storageItemLoading: false,
     storages: [],
+    storagesIot: {
+        temperature: 0,
+        humidity: 0,
+        measurementDate: '--'
+    }
 }
 
 function storagesReducer(state = initState, action: AnyAction): StoragesState {
@@ -64,6 +70,11 @@ function storagesReducer(state = initState, action: AnyAction): StoragesState {
                 ...state,
                 error: action.payload,
                 storageItemLoading: false
+            }
+        case StoragesEnumTypes.STORAGES_IOT:
+            return {
+                ...state,
+                storagesIot: action.payload,
             }
         default:
             return state

@@ -108,3 +108,11 @@ export const getStorageItem = (id: string) => {
         }
     }
 }
+
+
+export const storagesIOTResponse = (data: any) => {
+    return {
+        type: StoragesEnumTypes.STORAGES_IOT,
+        payload: data,
+    }
+}

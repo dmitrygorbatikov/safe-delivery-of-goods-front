@@ -1,5 +1,5 @@
 import { AnyAction } from 'redux'
-import {CarEnumTypes, CarItem} from "./types";
+import {CarEnumTypes, CarItem, CarsIot} from "./types";
 
 interface CarsState {
     error?: string
@@ -9,6 +9,7 @@ interface CarsState {
     cars: CarItem[]
     carItem?: CarItem
     storageCars: CarItem[]
+    carsIOT: CarsIot
 }
 
 const initState: CarsState = {
@@ -16,7 +17,14 @@ const initState: CarsState = {
     carItemLoading: false,
     storageCarsLoading:false,
     cars: [],
-    storageCars: []
+    storageCars: [],
+    carsIOT: {
+        engineHeating: 0,
+        inflationOfTires: 0,
+        tightnessOfBolts: 0,
+        measurementDate: '--'
+    }
+
 }
 
 function carsReducer(state = initState, action: AnyAction): CarsState {
@@ -89,6 +97,11 @@ function carsReducer(state = initState, action: AnyAction): CarsState {
                 ...state,
                 error: action.payload,
                 storageCarsLoading: false
+            }
+        case CarEnumTypes.CARS_IOT:
+            return {
+                ...state,
+                carsIOT: action.payload,
             }
         default:
             return state

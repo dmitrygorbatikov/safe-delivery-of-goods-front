@@ -1,17 +1,17 @@
 import {useParams} from "react-router";
 import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {getStorageItem} from "../modules/storages/actions";
+import {getStorageItem, storagesIOTResponse} from "../modules/storages/actions";
 import {
     getStorageItemLoadingSelector,
-    storageItemSelector
+    storageItemSelector, storagesIotSelector
 } from "../modules/storages/selectors";
 import {Box, Card, LinearProgress, Typography} from "@mui/material";
 import MenuDrawer from "../components/home/MenuDrawer";
 import {getManagerProfile} from "../modules/manager/actions";
-import {createdDate, normalizeCarsData} from "../helpers/functions";
+import {createdDate, getRandomCarsIot, getRandomStoragesIot, normalizeCarsData} from "../helpers/functions";
 import TableCars from "../components/cars/Table";
-import {getStorageCars} from "../modules/cars/actions";
+import {carsIOTResponse, getStorageCars} from "../modules/cars/actions";
 import {getStorageCarLoadingSelector, storageCarsSelector} from "../modules/cars/selectors";
 import {getStorageProducts} from "../modules/products/actions";
 import {
@@ -31,6 +31,8 @@ const DetailStoragePage = () => {
     const products = useSelector(storageProductsSelector)
     const drivers = useSelector(storageDriversSelector)
     const storageLoading = useSelector(getStorageItemLoadingSelector)
+    const storagesIot = useSelector(storagesIotSelector)
+
     const carsLoading = useSelector(getStorageCarLoadingSelector)
     const productsLoading = useSelector(getStorageProductsLoadingSelector)
     const driversLoading = useSelector(getStorageDriverLoadingSelector)
@@ -40,6 +42,9 @@ const DetailStoragePage = () => {
         dispatch(getStorageCars(id))
         dispatch(getManagerProfile())
         dispatch(getStorageDrivers(id))
+        setInterval(() => {
+            dispatch(storagesIOTResponse(getRandomStoragesIot()))
+        }, 2500)
     }, [])
     const carsRows = normalizeCarsData(cars)
     const carsHeaders = ['Number', 'Model', 'Carrying capacity', 'Price', 'Condition', 'Status', 'Register date', 'Edit']
@@ -64,12 +69,15 @@ const DetailStoragePage = () => {
                             <Typography variant="h4">Created date: {createdDate(storage?.registerDate)}</Typography>
                             <Typography variant="h4">Latitude: {storage?.latitude}</Typography>
                             <Typography variant="h4">Longitude: {storage?.longitude}</Typography>
+                            <Typography style={{color: `${storagesIot.temperature > 21 && storagesIot.temperature < 30 ? 'orange'
+                                    : storagesIot.temperature < 21 ? 'green': 'red'}`}}
+                                variant="h4">Temperature: {storagesIot.temperature}</Typography>
                             <Typography
-                                variant="h4">Temperature: {storage?.indicators[storage?.indicators.length - 1]?.temperature ?? '--'}</Typography>
-                            <Typography
-                                variant="h4">Humidity: {storage?.indicators[storage?.indicators.length - 1]?.humidity ?? '--'}</Typography>
+                                style={{color: `${storagesIot.humidity > 80 && storagesIot.humidity < 100 ? 'orange'
+                                        : storagesIot.humidity < 80 ? 'green': 'red'}`}}
+                                variant="h4">Humidity: {storagesIot.humidity}</Typography>
                             <Typography variant="h4">Measurement
-                                date: {storage?.indicators[storage?.indicators.length - 1]?.measurementDate ?? '--'}</Typography>
+                                date: {storagesIot.measurementDate}</Typography>
                         </Card>
                         <div style={{display: 'block', width: '100%', marginRight: 30}}>
                             <Card style={{width: '100%', marginLeft: 10, padding: 10}}>

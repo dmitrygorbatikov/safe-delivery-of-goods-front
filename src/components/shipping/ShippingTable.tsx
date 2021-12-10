@@ -8,8 +8,9 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import {Button, Typography} from "@mui/material";
 import {useHistory} from "react-router";
-import {createdDate} from "../../helpers/functions";
+import {createdDate, msToTime} from "../../helpers/functions";
 import ViewGoodsDialog from "./ViewGoodsDialog";
+import {ShippingStatusEnum} from "../../modules/shipping/types";
 
 const StyledTableCell = styled(TableCell)(({theme}) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -31,7 +32,6 @@ const StyledTableRow = styled(TableRow)(({theme}) => ({
     },
 }));
 
-
 export default function TableShipping(props: any) {
     const {rows, headers} = props
     const history = useHistory()
@@ -51,7 +51,15 @@ export default function TableShipping(props: any) {
                         {rows.map((row: any) => (
                             <StyledTableRow key={row._id}>
                                 <StyledTableCell align="right"
-                                                 style={{textAlign: 'right'}}>{row.status}</StyledTableCell>
+                                                 style={{textAlign: 'right'}}>{row.status === ShippingStatusEnum.planned ?
+                                    <div style={{fontWeight: 700, color: 'orange', fontSize: 25}}>PLANNED</div> :
+                                    row.status === ShippingStatusEnum.sent ?
+                                        <div style={{fontWeight: 700, color: 'blue', fontSize: 25}}>SENT</div> : <div
+                                            style={{
+                                                fontWeight: 700,
+                                                color: 'green',
+                                                fontSize: 25
+                                            }}>DELIVERED</div>}</StyledTableCell>
                                 <StyledTableCell align="right"><Button variant="outlined" color="warning"
                                                                        onClick={() => {
                                                                            history.push(`/storages/${row.storageFrom}`)
@@ -68,9 +76,9 @@ export default function TableShipping(props: any) {
                                                                        onClick={() => {
                                                                            history.push(`/drivers/${row.driverId}`)
                                                                        }}>View driver</Button></StyledTableCell>
-                                <StyledTableCell align="right">{row.dispatchTime}</StyledTableCell>
+                                <StyledTableCell align="right">{row.arrivalTime !== 0 ? msToTime(row.arrivalTime-row.registerDate) : '--'}</StyledTableCell>
                                 <StyledTableCell align="right"><ViewGoodsDialog goods={row.goods}/></StyledTableCell>
-                                <StyledTableCell align="right">{row.arrivalTime}</StyledTableCell>
+                                <StyledTableCell align="right">{row.arrivalTime !== 0 ? createdDate(row.arrivalTime) : '--'}</StyledTableCell>
                                 <StyledTableCell align="right">{createdDate(row.registerDate)}</StyledTableCell>
                             </StyledTableRow>
                         ))}

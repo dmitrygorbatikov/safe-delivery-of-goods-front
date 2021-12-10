@@ -7,7 +7,11 @@ export enum ShippingEnumTypes {
     POST_SHIPPING_RESPONSE = 'POST_SHIPPING_RESPONSE',
     POST_SHIPPING_ERROR = 'POST_SHIPPING_ERROR',
 }
-
+export enum ShippingStatusEnum {
+    'planned' = 'planned',
+    'sent' = 'sent',
+    'delivered' = 'delivered'
+}
 export interface ShippingItem {
     _id: string
     status: string

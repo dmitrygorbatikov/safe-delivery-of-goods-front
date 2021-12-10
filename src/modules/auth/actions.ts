@@ -10,6 +10,7 @@ export const loginRequest = () => {
 }
 
 export const loginResponse = (token: string) => {
+    localStorage.setItem('token', token)
     return {
         type: AuthEnumTypes.LOGIN_RESPONSE,
         payload: token,
@@ -64,6 +65,7 @@ export const registerRequest = () => {
 }
 
 export const registerResponse = (token: string) => {
+    localStorage.setItem('token', token)
     return {
         type: AuthEnumTypes.REGISTER_RESPONSE,
         payload: token,

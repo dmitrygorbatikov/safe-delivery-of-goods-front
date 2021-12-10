@@ -8,6 +8,7 @@ import {shippingSelector} from "../modules/shipping/selectors";
 import {getShipping} from "../modules/shipping/actions";
 import TableShipping from "../components/shipping/ShippingTable";
 import NewShippingDialog from "../components/shipping/NewShippingDialog";
+import {ShippingFilter} from "../components/shipping/ShippingFilter";
 
 const ShippingPage = () => {
     const dispatch = useDispatch()
@@ -24,7 +25,7 @@ const ShippingPage = () => {
                 <div><MenuDrawer/></div>
             </div>
             <div className="home__navigation">
-                <div style={{marginLeft: 10}}><Filters/></div>
+                <div style={{marginLeft: 10}}><ShippingFilter/></div>
                 <div><NewShippingDialog/></div>
             </div>
             <Card className="home__table">
